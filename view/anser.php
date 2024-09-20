@@ -10,6 +10,9 @@ table.question-table td {
 p {
 	margin: 0px 0px 10px 0px;
 }
+textarea {
+	width: 95%;
+}
 .button-primary, .button-secondary {
 	display: inline-block;
 	text-decoration: none;
@@ -65,6 +68,9 @@ p {
 	outline: 2px solid transparent;
 	outline-offset: 0
 }
+.error-message {
+	color:#f00;
+}
 </style>
 <script>
 btnClick = function(cmd) {
@@ -85,14 +91,14 @@ btnClick = function(cmd) {
 		$isNeeds = false;
 		if ( $theme->user->status == '1' ) {
 			foreach( $theme->questions as $q ) {
-				if ( $q->anser->anser == "" ) {
+				if ( $q->isNeedsAnser() ) {
 					$isNeeds = true;
 					$theme->user->status = '0';
 				}
 			}
 		}
 		if ( $isNeeds ) {
-			echo '<span style="color:#f00;">未回答の質問があります</span>';
+			echo '<span class="error-message">未回答の質問があります</span>';
 		}
 	?>
 	<p><?php echo str_replace("[CR]","<br/>",$theme->header); ?></p>
@@ -102,8 +108,8 @@ btnClick = function(cmd) {
 		$index = 1;
 		foreach( $theme->questions as $q ) {
 			echo '<tr><td>Q'.$index.'：';
-			if ( $isNeeds && $q->anser->anser == "" ) {
-				echo '<br/><span style="color:#f00;">未回答です</span>';
+			if ( $isNeeds && $q->isNeedsAnser() ) {
+				echo '<br/><span class="error-message">未回答です</span>';
 			}
 			echo '</td><td><p>'.str_replace("[CR]","<br/>",$q->header).'</p>';
 			echo '<p>';
@@ -149,12 +155,12 @@ btnClick = function(cmd) {
 						echo '<input type="checkbox" id="q'.$q->qid.'_'.$aindex.'" name="q'.$q->qid.'[]" value="'.$a.'"'.$append.' />'
 							.'<label for="q'.$q->qid.'_'.$aindex.'">'.$a.'</label>';
 						$aindex++;
+						echo '<br/>';
 					}
-					echo '<br/>';
 				}
 			} else {
 				if ( $theme->user->status == '1' || $theme->user->status == '2' ) {
-					echo '<input type="hidden" id="q'.$q->qid.'_'.$aindex.'" name="q'.$q->qid.'" value="'.$q->anser->anser.'" />'
+					echo '<input type="hidden" name="q'.$q->qid.'" value="'.$q->anser->anser.'" />'
 					.'<span style="">'.str_replace("\n","<br/>",$q->anser->anser).'</span>';
 				} else {
 					echo '<textarea name="q'.$q->qid.'">'.$q->anser->anser.'</textarea>';

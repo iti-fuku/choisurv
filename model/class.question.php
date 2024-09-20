@@ -9,7 +9,12 @@ class Question {
 	public $footer;
 	public $aType;
 	public $aList;
+	// 質問タイプ 0bit:コメント、1bit:任意
 	public $cType;
+	// 0bit:コメント(true|false)
+	public $cType0;
+	// 1bit:任意(true|false)
+	public $cType1;
 	public $updateTime;
 
 	public $anser;
@@ -24,10 +29,19 @@ class Question {
 		$question->footer = str_replace("\r\n","[CR]",stripslashes($_POST['qfooter'.$index]));
 		$question->aType = $_POST['atype'.$index];
 		$question->aList = str_replace("\r\n","[CR]",$_POST['alist'.$index]);
-		if ( isset($_POST['ctype'.$index]) ) {
+		$question->cType = 0;
+		// 回答タイプ
+		if ( isset($_POST['ctype0'.$index]) ) {
+			$question->cType0 = 'true';
 			$question->cType = 1;
 		} else {
-			$question->cType = 0;
+			$question->cType0 = 'false';
+		}
+		if ( isset($_POST['ctype1'.$index]) ) {
+			$question->cType1 = 'true';
+			$question->cType += 2;
+		} else {
+			$question->cType1 = 'false';
 		}
 
 		return $question;
@@ -57,6 +71,24 @@ class Question {
 	// セッション情報から回答を取得
 	public function setAnserFromDb($tid, $user) {
 		$this->anser = Anser::fromDB($tid,$this->qid,$user);
+	}
+
+	// 質問タイプの値を取得
+	public function getCType($index) {
+		if ( ( ( $this->cType >> $index ) & 1 ) == 1 ) {
+			return 'true';
+		}
+		return 'false';
+	}
+
+	// 未回答チェック
+	public function isNeedsAnser() {
+		if ( $this->cType1 == 'false' ) {
+			if ( $this->anser->anser == "" ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// DBアクセス
@@ -164,6 +196,8 @@ class Question {
 		$question->aType = $row['atype'];
 		$question->aList = $row['alist'];
 		$question->cType = $row['ctype'];
+		$question->cType0 = $question->getCType(0);
+		$question->cType1 = $question->getCType(1);
 		$question->updateTime = date('Y/m/d H:i:s',strtotime($row['update_time']));
 		return $question;
 	}

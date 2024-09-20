@@ -115,7 +115,11 @@ jQuery( function() {
 					</td>
 				</tr>
 				<tr><td>コメント</td>
-					<td><input type="checkbox" :name="'ctype'+index" <?php echo $readOnly; ?> v-model="item.ctype">
+ 					<td><input type="checkbox" :name="'ctype0'+index" <?php echo $readOnly; ?> v-model="item.ctype0">
+					</td>
+				</tr>
+				<tr><td>任意項目</td>
+ 					<td><input type="checkbox" :name="'ctype1'+index" <?php echo $readOnly; ?> v-model="item.ctype1">
 					</td>
 				</tr>
 				<tr><td>フッタ</td>
@@ -150,11 +154,11 @@ jQuery( function() {
 				items: [
 <?php
 	if ( empty($theme->questions) ) {
-		echo '{ qid:\'\', header: \'\',atype:"",alist: \'\',footer:\'\',ctype:\'\'},';
+		echo '{ qid:\'\', header: \'\',atype:"",alist: \'\',footer:\'\',ctype0:\'false\',ctype1:\'false\'},';
 	} else {
 		foreach( $theme->questions as $q ) {
-			$ctype = ( $q->cType == 1 ) ? 'true' : 'false';
-			echo '{ qid:\''.$q->qid.'\', header: \''.$q->header.'\',atype:\''.$q->aType.'\',alist: \''.$q->aList.'\',footer:\''.$q->footer.'\',ctype: \''.$ctype.'\'},';
+			echo '{ qid:\''.$q->qid.'\', header: \''.$q->header.'\',atype:\''.$q->aType.'\',alist: \''.$q->aList.'\',footer:\''.$q->footer.
+				'\',ctype0: \''.$q->cType0.'\',ctype1: \''.$q->cType1.'\'},';
 		}
 	}
 ?>
@@ -163,10 +167,10 @@ jQuery( function() {
 		},
 		methods: {
 			addItem: function (index) {
-				this.items.splice(index,0,{ qid:"", header: "", atype:"", alist:"" , ctype:"false" ,footer:"" });
+				this.items.splice(index,0,{ qid:"", header: "", atype:"", alist:"" , ctype0:"false" , ctype1:"false" ,footer:"" });
 			},
 			addlastItem: function (event) {
-				this.items.push({ qid:"", header: "", atype:"", alist:"", ctype:"false" ,footer:"" });
+				this.items.push({ qid:"", header: "", atype:"", alist:"", ctype0:"false" , ctype1:"false" ,footer:"" });
 			},
 			deleteItem: function (index) {
 				this.items.splice(index,1);
