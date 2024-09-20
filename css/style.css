@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* 変更不可の入力エリア */
+input.readonly, input[readonly], textarea.readonly, textarea[readonly] {
+	background: #c0c0c0;
+	color: #404040;
+}
+
+/* 質問毎の点線 */
+tr.question {
+	border: 1px #c0c0c0 dashed;
+}
+
+/* 質問の追加 */
+div.plus {
+	height: 20px;
+	margin: 0px auto;
+	border-radius: 4px;
+	padding-left: 30px;
+	border: 1px #c0c0c0 solid;
+ 	background: url(../images/plus.png) no-repeat left center;
+	cursor: pointer;
+}
+
+div.plus:hover {
+  opacity: .7;
+}
+
+table.form-table td.plus-area {
+	margin: 0px auto;
+	padding: 0px 5px;
+}
+table.form-table td {
+	padding: 0px;
+}
+
+table.form-table td.form-title {
+	width: 100px;
+}
+
+table.question-table {
+	width: 100%;
+}
+table.question-table td {
+	padding: 0px;
+}
