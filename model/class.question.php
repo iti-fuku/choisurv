@@ -9,17 +9,17 @@ class Question {
 	public $footer;
 	public $aType;
 	public $aList;
-	// Ž¿–âƒ^ƒCƒv 0bit:ƒRƒƒ“ƒgA1bit:”CˆÓ
+	// è³ªå•ã‚¿ã‚¤ãƒ— 0bit:ã‚³ãƒ¡ãƒ³ãƒˆã€1bit:ä»»æ„
 	public $cType;
-	// 0bit:ƒRƒƒ“ƒg(true|false)
+	// 0bit:ã‚³ãƒ¡ãƒ³ãƒˆ(true|false)
 	public $cType0;
-	// 1bit:”CˆÓ(true|false)
+	// 1bit:ä»»æ„(true|false)
 	public $cType1;
 	public $updateTime;
 
 	public $anser;
 
-	// ƒZƒbƒVƒ‡ƒ“î•ñ‚©‚çŽæ“¾
+	// ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã‹ã‚‰å–å¾—
 	public static function fromSession($index) {
 		$question = new Question();
 
@@ -30,7 +30,7 @@ class Question {
 		$question->aType = $_POST['atype'.$index];
 		$question->aList = str_replace("\r\n","[CR]",$_POST['alist'.$index]);
 		$question->cType = 0;
-		// ‰ñ“šƒ^ƒCƒv
+		// å›žç­”ã‚¿ã‚¤ãƒ—
 		if ( isset($_POST['ctype0'.$index]) ) {
 			$question->cType0 = 'true';
 			$question->cType = 1;
@@ -45,6 +45,12 @@ class Question {
 		}
 
 		return $question;
+	}
+
+	// ã‚³ãƒ”ãƒ¼ç”¨ã«IDã‚¯ãƒªã‚¢
+	public function clearId() {
+		$this->qid = '';
+		$this->tid = '';
 	}
 
 	public function isEmpty() {
@@ -63,17 +69,17 @@ class Question {
 		return true;
 	}
 
-	// ƒZƒbƒVƒ‡ƒ“î•ñ‚©‚ç‰ñ“š‚ðŽæ“¾
+	// ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã‹ã‚‰å›žç­”ã‚’å–å¾—
 	public function setAnserFromSession($tid,$user) {
 		$this->anser = Anser::fromSession($tid,$this->qid,$user);
 	}
 
-	// ƒZƒbƒVƒ‡ƒ“î•ñ‚©‚ç‰ñ“š‚ðŽæ“¾
+	// ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã‹ã‚‰å›žç­”ã‚’å–å¾—
 	public function setAnserFromDb($tid, $user) {
 		$this->anser = Anser::fromDB($tid,$this->qid,$user);
 	}
 
-	// Ž¿–âƒ^ƒCƒv‚Ì’l‚ðŽæ“¾
+	// è³ªå•ã‚¿ã‚¤ãƒ—ã®å€¤ã‚’å–å¾—
 	public function getCType($index) {
 		if ( ( ( $this->cType >> $index ) & 1 ) == 1 ) {
 			return 'true';
@@ -81,7 +87,7 @@ class Question {
 		return 'false';
 	}
 
-	// –¢‰ñ“šƒ`ƒFƒbƒN
+	// æœªå›žç­”ãƒã‚§ãƒƒã‚¯
 	public function isNeedsAnser() {
 		if ( $this->cType1 == 'false' ) {
 			if ( $this->anser->anser == "" ) {
@@ -91,7 +97,7 @@ class Question {
 		return false;
 	}
 
-	// DBƒAƒNƒZƒX
+	// DBã‚¢ã‚¯ã‚»ã‚¹
 	public function insert() {
 		global $wpdb;
 		$wpdb->insert( $wpdb->prefix ."choisurv_question",

@@ -98,14 +98,14 @@ function choisurvAdminCallback() {
 			$theme = Theme::fromSession();
 			if ( !empty($theme->errors) ) {
 				$_SESSION['errors'] = $theme->errors;
-				View::themeEdit('登録','create',$theme);
+				View::themeEdit('作成','create',$theme);
 			} else {
 				if ( $theme->insert() ) {
-					$_SESSION['message'] = '登録しました';
+					$_SESSION['message'] = '作成しました';
 					View::themeEdit('更新','update',$theme);
 				} else {
 					$_SESSION['errors'] = $theme->errors;
-					View::themeEdit('登録','create',$theme);
+					View::themeEdit('作成','create',$theme);
 				}
 			}
 			break;
@@ -128,7 +128,7 @@ function choisurvAdminCallback() {
 			break;
 		case 'create':
 			$theme = new Theme();
-			View::themeEdit('登録','create',$theme);
+			View::themeEdit('作成','create',$theme);
 			break;
 		case 'update':
 			$theme = Theme::fromDb($_GET['tid']);
@@ -146,6 +146,11 @@ function choisurvAdminCallback() {
 			$theme = Theme::fromDb($_GET['tid']);
 			User::reset($theme);
 			View::themeResult($theme);
+			break;
+		case 'copy':
+			$theme = Theme::fromDb($_GET['tid']);
+			$theme->clearId();
+			View::themeEdit('作成','create',$theme);
 			break;
 		default:
 			break;

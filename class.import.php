@@ -18,7 +18,7 @@ class Import {
 	}
 
 	public static function loadResources() {
-		// 固有スタイル
+		// 蝗ｺ譛峨せ繧ｿ繧､繝ｫ
 		wp_register_style( 'style.css', plugin_dir_url( __FILE__ ) . 'css/style.css' );
 		wp_enqueue_style( 'style.css');
 		// datepicker

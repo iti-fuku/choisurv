@@ -40,7 +40,7 @@ class User {
 		$user->update();
 	}
 
-	// DBアクセス
+	// DB繧｢繧ｯ繧ｻ繧ｹ
 	public function upsert() {
 		global $wpdb;
 		$tid = $wpdb->get_var($wpdb->prepare(

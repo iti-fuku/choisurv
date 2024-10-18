@@ -71,6 +71,9 @@ textarea {
 .error-message {
 	color:#f00;
 }
+.message {
+	color:#00f;
+}
 </style>
 <script>
 btnClick = function(cmd) {
@@ -96,9 +99,11 @@ btnClick = function(cmd) {
 					$theme->user->status = '0';
 				}
 			}
-		}
-		if ( $isNeeds ) {
-			echo '<span class="error-message">未回答の質問があります</span>';
+			if ( $isNeeds ) {
+				echo '<span class="error-message">未回答の質問があります</span>';
+			} else {
+				echo '<span class="message">まだ回答は完了していません。<br/>回答内容を確認し「確定」ボタンを押してください</span>';
+			}
 		}
 	?>
 	<p><?php echo str_replace("[CR]","<br/>",$theme->header); ?></p>

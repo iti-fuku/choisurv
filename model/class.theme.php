@@ -70,6 +70,14 @@ class Theme {
 		return $theme;
 	}
 
+	// コピー用にIDクリア
+	public function clearId() {
+		$this->tid = '';
+		foreach($this->questions as $question) {
+			$question->clearId();
+		}
+	}
+
 	// セッション情報から回答を取得
 	public function setAnserFromSession($userName) {
 		$this->user = User::fromSession($this->tid, $userName);
